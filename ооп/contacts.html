@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Контакти | Збірник кулінарних рецептів</title>
+    <meta name="description" content="Зв'яжіться з нами для отримання додаткової інформації про рецепти та співпрацю.">
+
+    <meta property="og:title" content="Контакти | Збірник кулінарних рецептів">
+    <meta property="og:description" content="Напишіть нам та отримайте консультацію щодо рецептів.">
+    <meta property="og:type" content="website">
+</head>
+
+<body>
+
+<header>
+    <h1>Контакти</h1>
+    <nav>
+        <a href="Collection of culinary recipes.html">Головна</a> |
+        <a href="catalog.html">Каталог</a> |
+        <a href="contacts.html">Контакти</a>
+    </nav>
+</header>
+
+<main>
+
+<section>
+<h2>Форма зворотного зв'язку</h2>
+
+<form method="post">
+
+<fieldset>
+    <legend>Контактні дані</legend>
+
+    <label for="name">Ім'я:</label>
+    <input type="text" id="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+
+    <label for="phone">Телефон:</label>
+    <input type="tel" 
+           id="phone"
+           pattern="[0-9]{10}" 
+           placeholder="0991234567"
+           required>
+</fieldset>
+
+<fieldset>
+    <legend>Додаткова інформація</legend>
+
+    <p>Тип звернення:</p>
+    <input type="radio" name="type" value="question" required> Питання
+    <input type="radio" name="type" value="cooperation"> Співпраця
+
+    <p>Оберіть категорію:</p>
+    <select required>
+        <optgroup label="Рецепти">
+            <option>Супи</option>
+            <option>Салати</option>
+        </optgroup>
+        <optgroup label="Інше">
+            <option>Технічна підтримка</option>
+        </optgroup>
+    </select>
+
+    <p>Повідомлення:</p>
+    <textarea rows="4" required></textarea>
+</fieldset>
+
+<button type="submit">Надіслати</button>
+
+</form>
+</section>
+
+</main>
+
+<footer>
+    <p>© 2026 Збірник рецептів</p>
+</footer>
+
+</body>
+</html>

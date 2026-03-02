@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог рецептів</title>
+    <meta name="description" content="Каталог рецептів з можливістю пошуку та порівняння характеристик.">
+
+    <meta property="og:title" content="Каталог рецептів">
+    <meta property="og:description" content="Оберіть рецепт та порівняйте характеристики.">
+    <meta property="og:type" content="website">
+</head>
+
+<body>
+
+<header>
+    <h1>Каталог рецептів</h1>
+    <nav>
+        <a href="Collection of culinary recipes.html">Головна</a> |
+        <a href="catalog.html">Каталог</a> |
+        <a href="contacts.html">Контакти</a>
+    </nav>
+</header>
+
+<main>  
+    <section> 
+     <h2>Пошук рецепту за інгредієнтами</h2>
+        <from>
+            <label>Введфть інгредієнт:</label>
+            <input type = 'text' placeholder="Наприклад: курка">
+             <button type="submit">Пошук</button>
+        </from>
+     </section>
+
+
+<section>
+    <h2>Порівняння рецептів</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th rowspan="2">Назва</th>
+                <th colspan="2">Характеристики</th>
+                <th rowspan="2">Порції</th>
+            </tr>
+            <tr>
+                <th>Час</th>
+                <th>Складність</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Борщ</td>
+                <td>60 хв</td>
+                <td>Середня</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>Карбонара</td>
+                <td>25 хв</td>
+                <td>Легка</td>
+                <td>3</td>
+            </tr>
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="4">Усі рецепти протестовані</td>
+            </tr>
+        </tfoot>
+    </table>
+</section>
+
+<section>
+    <h2>Розрахунок порцій</h2>
+    <form method="post">
+        <label for="base">Базові порції:</label>
+        <input type="number" id="base" value="2" required>
+
+        <label for="needed">Потрібно порцій:</label>
+        <input type="number" id="needed" required>
+
+        <button type="submit">Розрахувати</button>
+    </form>
+</section>
+
+</main>
+
+<footer>
+    <p>© 2026 Збірник рецептів</p>
+</footer>
+
+</body>
+</html>
