@@ -9,6 +9,9 @@
     <meta property="og:title" content="Каталог рецептів">
     <meta property="og:description" content="Оберіть рецепт та порівняйте характеристики.">
     <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -16,20 +19,22 @@
 <header>
     <h1>Каталог рецептів</h1>
     <nav>
-        <a href="Collection of culinary recipes.html">Головна</a> |
-        <a href="catalog.html">Каталог</a> |
-        <a href="contacts.html">Контакти</a>
+        <ul>
+            <li><a href="Collection of culinary recipes.html" class="active">Головна</a></li>
+            <li><a href="catalog.html">Каталог</a></li>
+            <li><a href="contacts.html">Контакти</a></li>
+        </ul>
     </nav>
 </header>
 
 <main>  
     <section> 
      <h2>Пошук рецепту за інгредієнтами</h2>
-        <from>
+        <form>
             <label>Введфть інгредієнт:</label>
             <input type = 'text' placeholder="Наприклад: курка">
              <button type="submit">Пошук</button>
-        </from>
+        </form>
      </section>
 
 
