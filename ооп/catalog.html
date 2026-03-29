@@ -4,46 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталог рецептів</title>
-    <meta name="description" content="Каталог рецептів з можливістю пошуку та порівняння характеристик.">
 
-    <meta property="og:title" content="Каталог рецептів">
-    <meta property="og:description" content="Оберіть рецепт та порівняйте характеристики.">
-    <meta property="og:type" content="website">
-
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="styles3.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
 
-<header>
-    <h1>Каталог рецептів</h1>
-    <nav>
-        <ul>
-            <li><a href="Collection of culinary recipes.html" class="active">Головна</a></li>
-            <li><a href="catalog.html">Каталог</a></li>
-            <li><a href="contacts.html">Контакти</a></li>
-        </ul>
+<div class="container">
+
+<header class="py-3">
+    <h1 class="text-center">Каталог рецептів</h1>
+    <nav class="text-center">
+        <a class="btn btn-outline-primary" href="Collection of culinary recipes.html">Головна</a>
+        <a class="btn btn-primary" href="catalog.html">Каталог</a>
+        <a class="btn btn-outline-primary" href="contacts.html">Контакти</a>
     </nav>
 </header>
 
-<main>  
-    <section> 
-     <h2>Пошук рецепту за інгредієнтами</h2>
-        <form>
-            <label>Введфть інгредієнт:</label>
-            <input type = 'text' placeholder="Наприклад: курка">
-             <button type="submit">Пошук</button>
-        </form>
-     </section>
+<main>
 
+<section class="my-4">
+    <h2>Пошук рецепту</h2>
+    <form class="row g-3">
+        <div class="col-md-8">
+            <input type="text" class="form-control" placeholder="Наприклад: курка">
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-success w-100">Пошук</button>
+        </div>
+    </form>
+</section>
 
-<section>
+<section class="my-4">
     <h2>Порівняння рецептів</h2>
 
-    <table border="1">
-        <thead>
+    <table class="table table-bordered table-striped text-center">
+        <thead class="table-dark">
             <tr>
                 <th rowspan="2">Назва</th>
                 <th colspan="2">Характеристики</th>
@@ -78,24 +74,32 @@
     </table>
 </section>
 
-<section>
+<section class="my-4">
     <h2>Розрахунок порцій</h2>
-    <form method="post">
-        <label for="base">Базові порції:</label>
-        <input type="number" id="base" value="2" required>
+    <form class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label">Базові порції:</label>
+            <input type="number" class="form-control" value="2">
+        </div>
 
-        <label for="needed">Потрібно порцій:</label>
-        <input type="number" id="needed" required>
+        <div class="col-md-6">
+            <label class="form-label">Потрібно порцій:</label>
+            <input type="number" class="form-control">
+        </div>
 
-        <button type="submit">Розрахувати</button>
+        <div class="col-12">
+            <button class="btn btn-primary">Розрахувати</button>
+        </div>
     </form>
 </section>
 
 </main>
 
-<footer>
+<footer class="text-center py-3">
     <p>© 2026 Збірник рецептів</p>
 </footer>
+
+</div>
 
 </body>
 </html>
