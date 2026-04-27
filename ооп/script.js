@@ -6,21 +6,46 @@ const recipes = [
     { id: 5, "recipe title": "Чізкейк", meta: { time: 120, diff: "Hard" }, ingredients: 10, "is spicy": false }
 ];
 
+const fastRecipes = recipes.filter(r => r.meta.time < 40);
+console.log("Швидкі рецепти (filter):", fastRecipes);
 
-const fastRecipes = recipes.filter(r => r.meta.time < 30);
-console.log("Швидкі рецепти:", fastRecipes);
-
-
-// 2. MAP — тільки назви
 const recipeNames = recipes.map(r => r["recipe title"]);
-console.log("Назви рецептів:", recipeNames);
+console.log("Список назв (map):", recipeNames);
+
+const uniqueDiffs = new Set(recipes.map(r => r.meta.diff));
+console.log("Унікальні складності (Set):", [...uniqueDiffs]);
+
+const timeList = new Map();
+recipes.forEach(r => timeList.set(r["recipe title"], r.meta.time));
+console.log("Час приготування 'Тайський карі' (Map):", timeList.get("Тайський карі") + " хв");
 
 
-const uniqueDiff = new Set(recipes.map(r => r.meta.diff));
-console.log("Унікальні складності:", [...uniqueDiff]);
 
+const btn = document.getElementById("searchBtn");
+const input = document.getElementById("searchInput");
+const output = document.getElementById("output");
 
-const recipeMap = new Map();
-recipes.forEach(r => recipeMap.set(r["recipe title"], r.meta.time));
+btn.addEventListener("click", () => {
+    const value = input.value.trim().toLowerCase();
 
-console.log("Час Карбонара:", recipeMap.get("Паста Карбонара"));
+    if (value === "") {
+        output.innerHTML = "<p class='text-muted'>Введіть назву для пошуку...</p>";
+        return;
+    }
+
+    const result = recipes.find(r =>
+        r["recipe title"].toLowerCase().includes(value)
+    );
+
+    if (!result) {
+        output.innerHTML = "<p style='color:red;'>Рецепт не знайдено</p>";
+        return;
+    }
+
+    output.innerHTML = `
+        <p><b>Назва:</b> ${result["recipe title"]}</p>
+        <p><b>Час:</b> ${result.meta.time} хв</p>
+        <p><b>Складність:</b> ${result.meta.diff}</p>
+        <p><b>Інгредієнти:</b> ${result.ingredients}</p>
+    `;
+});
