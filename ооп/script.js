@@ -6,11 +6,6 @@ const recipes = [
     { id: 5, "recipe title": "Чізкейк", meta: { time: 120, diff: "Hard" }, ingredients: 10, "is spicy": false }
 ];
 
-
-// ============================
-// ПОШУК (завдання 1)
-// ============================
-
 const btn = document.getElementById("searchBtn");
 const input = document.getElementById("searchInput");
 const output = document.getElementById("output");
@@ -43,11 +38,6 @@ if (btn && input && output) {
         `;
     });
 }
-
-
-// ============================
-// ДИНАМІЧНІ КАРТКИ (завдання 1)
-// ============================
 
 const recipesContainer = document.getElementById("recipesContainer");
 const cart = document.getElementById("cart");
@@ -85,7 +75,6 @@ if (recipesContainer) {
         btnCart.classList.add("btn", "btn-success");
         btnCart.textContent = "В кошик";
 
-        // Детальніше
         btnDetails.addEventListener("click", () => {
             alert(
                 `Рецепт: ${recipe["recipe title"]}\n` +
@@ -95,7 +84,6 @@ if (recipesContainer) {
             );
         });
 
-        // Кошик (cloneNode)
         btnCart.addEventListener("click", () => {
 
             const clone = card.cloneNode(true);
@@ -116,10 +104,6 @@ if (recipesContainer) {
 }
 
 
-// ============================
-// ЗАВДАННЯ 2 - ДЕЛЕГУВАННЯ + ACTIVE
-// ============================
-
 if (recipesContainer) {
 
     recipesContainer.addEventListener("click", (event) => {
@@ -136,10 +120,6 @@ if (recipesContainer) {
     });
 }
 
-
-// ============================
-// SET - КАТЕГОРІЇ
-// ============================
 
 const categorySelect = document.getElementById("categorySelect");
 
@@ -159,11 +139,6 @@ if (categorySelect) {
 
     });
 }
-
-
-// ============================
-// MAP - ШВИДКИЙ ПОШУК
-// ============================
 
 const liveSearch = document.getElementById("liveSearch");
 const priceOutput = document.getElementById("priceOutput");
