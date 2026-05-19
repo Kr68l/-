@@ -1,171 +1,117 @@
-const recipes = [
-    { id: 1, "recipe title": "Червоний борщ", meta: { time: 90, diff: "Medium" }, ingredients: 12, "is spicy": false },
-    { id: 2, "recipe title": "Паста Карбонара", meta: { time: 25, diff: "Easy" }, ingredients: 6, "is spicy": false },
-    { id: 3, "recipe title": "Тайський карі", meta: { time: 40, diff: "Hard" }, ingredients: 15, "is spicy": true },
-    { id: 4, "recipe title": "Салат Цезар", meta: { time: 15, diff: "Easy" }, ingredients: 8, "is spicy": false },
-    { id: 5, "recipe title": "Чізкейк", meta: { time: 120, diff: "Hard" }, ingredients: 10, "is spicy": false }
-];
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог рецептів</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../script.js" defer></script>
+</head>
 
-const btn = document.getElementById("searchBtn");
-const input = document.getElementById("searchInput");
-const output = document.getElementById("output");
+<body>
 
-if (btn && input && output) {
+<div class="container">
 
-    btn.addEventListener("click", () => {
+<header class="py-3 text-center">
+    <h1>Каталог рецептів</h1>
 
-        const value = input.value.trim().toLowerCase();
+    <nav>
+        <a class="btn btn-outline-primary" href="Collection of culinary recipes.html">Головна</a>
+        <a class="btn btn-primary" href="catalog.html">Каталог</a>
+        <a class="btn btn-outline-primary" href="contacts.html">Контакти</a>
+    </nav>
+</header>
 
-        if (value === "") {
-            output.innerHTML = "<p class='text-muted'>Введіть назву для пошуку...</p>";
-            return;
-        }
+<main>
+    <section class="my-4">
+        <h2>Фільтр категорій</h2>
+        <select id="categorySelect" class="form-select"></select>
+    </section>
+    
+    <section class="my-4">
+        <h2>Швидкий пошук</h2>
+        <input id="liveSearch" class="form-control" placeholder="Введіть назву">
+        <p id="priceOutput" class="mt-2"></p>
+    </section>
+    
+    <section class="my-4">
+        <h2>Кошик</h2>
+        <div id="cart" class="border p-3"></div>
+    </section>
+    
+    <section class="my-4">
 
-        const result = recipes.find(r =>
-            r["recipe title"].toLowerCase().includes(value)
-        );
-
-        if (!result) {
-            output.innerHTML = "<p style='color:red;'>Рецепт не знайдено</p>";
-            return;
-        }
-
-        output.innerHTML = `
-            <p><b>Назва:</b> ${result["recipe title"]}</p>
-            <p><b>Час:</b> ${result.meta.time} хв</p>
-            <p><b>Складність:</b> ${result.meta.diff}</p>
-            <p><b>Інгредієнти:</b> ${result.ingredients}</p>
-        `;
-    });
-}
-
-const recipesContainer = document.getElementById("recipesContainer");
-const cart = document.getElementById("cart");
-
-if (recipesContainer) {
-
-    const fragment = document.createDocumentFragment();
-
-    recipes.forEach(recipe => {
-
-        const col = document.createElement("div");
-        col.classList.add("col-md-4");
-
-        const card = document.createElement("div");
-        card.classList.add("card", "shadow", "h-100");
-
-        const body = document.createElement("div");
-        body.classList.add("card-body");
-
-        const title = document.createElement("h5");
-        title.classList.add("card-title");
-        title.textContent = recipe["recipe title"];
-
-        const time = document.createElement("p");
-        time.textContent = `Час: ${recipe.meta.time} хв`;
-
-        const diff = document.createElement("p");
-        diff.textContent = `Складність: ${recipe.meta.diff}`;
-
-        const btnDetails = document.createElement("button");
-        btnDetails.classList.add("btn", "btn-primary", "me-2");
-        btnDetails.textContent = "Детальніше";
-
-        const btnCart = document.createElement("button");
-        btnCart.classList.add("btn", "btn-success");
-        btnCart.textContent = "В кошик";
-
-        btnDetails.addEventListener("click", () => {
-            alert(
-                `Рецепт: ${recipe["recipe title"]}\n` +
-                `Час: ${recipe.meta.time} хв\n` +
-                `Складність: ${recipe.meta.diff}\n` +
-                `Інгредієнтів: ${recipe.ingredients}`
-            );
-        });
-
-        btnCart.addEventListener("click", () => {
-
-            const clone = card.cloneNode(true);
-            clone.classList.add("mb-2");
-
-            cart.appendChild(clone);
-
-        });
-
-        body.append(title, time, diff, btnDetails, btnCart);
-        card.append(body);
-        col.append(card);
-        fragment.append(col);
-
-    });
-
-    recipesContainer.append(fragment);
-}
-
-
-if (recipesContainer) {
-
-    recipesContainer.addEventListener("click", (event) => {
-
-        const card = event.target.closest(".card");
-        if (!card) return;
-
-        // підсвітка картки
-        if (!event.target.closest("button")) {
-            card.classList.toggle("active");
-            return;
-        }
-
-    });
-}
-
-
-const categorySelect = document.getElementById("categorySelect");
-
-if (categorySelect) {
-
-    const categories = new Set(
-        recipes.map(r => r.meta.diff)
-    );
-
-    categories.forEach(cat => {
-
-        const option = document.createElement("option");
-        option.value = cat;
-        option.textContent = cat;
-
-        categorySelect.append(option);
-
-    });
-}
-
-const liveSearch = document.getElementById("liveSearch");
-const priceOutput = document.getElementById("priceOutput");
-
-const recipeMap = new Map();
-
-recipes.forEach(r => {
-    recipeMap.set(
-        r["recipe title"].toLowerCase(),
-        r.meta.time
-    );
-});
-
-if (liveSearch && priceOutput) {
-
-    liveSearch.addEventListener("input", () => {
-
-        const value = liveSearch.value.toLowerCase();
-
-        if (recipeMap.has(value)) {
-            priceOutput.textContent =
-                "Час приготування: " +
-                recipeMap.get(value) + " хв";
-        } else {
-            priceOutput.textContent = "Не знайдено";
-        }
-
-    });
-
-}
+        <h2>Пошук рецепту</h2>
+    
+        <div class="row g-3">
+    
+            <div class="col-md-8">
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="form-control"
+                    placeholder="Наприклад: борщ">
+            </div>
+    
+            <div class="col-md-4">
+                <button
+                    type="button"
+                    id="searchBtn"
+                    class="btn btn-success w-100">
+                    Пошук
+                </button>
+            </div>
+    
+        </div>
+    
+    </section>
+    
+    <section class="my-4">
+    
+        <h2>Результат</h2>
+    
+        <div id="output" class="p-3 border rounded"></div>
+    
+    </section>
+    
+    <section class="my-4">
+        <h2>Каталог рецептів</h2>
+        <div id="recipesContainer" class="row g-4"></div>
+    </section>
+    
+    <section class="my-4">
+    
+        <h2>Розрахунок порцій</h2>
+    
+        <form class="row g-3">
+    
+            <div class="col-md-6">
+                <label class="form-label">Базові порції:</label>
+                <input type="number" class="form-control" value="2">
+            </div>
+    
+            <div class="col-md-6">
+                <label class="form-label">Потрібно порцій:</label>
+                <input type="number" class="form-control">
+            </div>
+    
+            <div class="col-12">
+                <button class="btn btn-primary">Розрахувати</button>
+            </div>
+    
+        </form>
+    
+    </section>
+    
+</main>
+    
+    <footer class="text-center py-3">
+        <p>© 2026 Збірник рецептів</p>
+    </footer>
+    
+    </div>
+    
+    <script src="script.js"></script>
+    
+</body>
+</html>
