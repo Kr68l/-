@@ -6,46 +6,191 @@ const recipes = [
     { id: 5, "recipe title": "Чізкейк", meta: { time: 120, diff: "Hard" }, ingredients: 10, "is spicy": false }
 ];
 
-const fastRecipes = recipes.filter(r => r.meta.time < 40);
-console.log("Швидкі рецепти (filter):", fastRecipes);
 
-const recipeNames = recipes.map(r => r["recipe title"]);
-console.log("Список назв (map):", recipeNames);
-
-const uniqueDiffs = new Set(recipes.map(r => r.meta.diff));
-console.log("Унікальні складності (Set):", [...uniqueDiffs]);
-
-const timeList = new Map();
-recipes.forEach(r => timeList.set(r["recipe title"], r.meta.time));
-console.log("Час приготування 'Тайський карі' (Map):", timeList.get("Тайський карі") + " хв");
-
-
+// ============================
+// ПОШУК (завдання 1)
+// ============================
 
 const btn = document.getElementById("searchBtn");
 const input = document.getElementById("searchInput");
 const output = document.getElementById("output");
 
-btn.addEventListener("click", () => {
-    const value = input.value.trim().toLowerCase();
+if (btn && input && output) {
 
-    if (value === "") {
-        output.innerHTML = "<p class='text-muted'>Введіть назву для пошуку...</p>";
-        return;
-    }
+    btn.addEventListener("click", () => {
 
-    const result = recipes.find(r =>
-        r["recipe title"].toLowerCase().includes(value)
+        const value = input.value.trim().toLowerCase();
+
+        if (value === "") {
+            output.innerHTML = "<p class='text-muted'>Введіть назву для пошуку...</p>";
+            return;
+        }
+
+        const result = recipes.find(r =>
+            r["recipe title"].toLowerCase().includes(value)
+        );
+
+        if (!result) {
+            output.innerHTML = "<p style='color:red;'>Рецепт не знайдено</p>";
+            return;
+        }
+
+        output.innerHTML = `
+            <p><b>Назва:</b> ${result["recipe title"]}</p>
+            <p><b>Час:</b> ${result.meta.time} хв</p>
+            <p><b>Складність:</b> ${result.meta.diff}</p>
+            <p><b>Інгредієнти:</b> ${result.ingredients}</p>
+        `;
+    });
+}
+
+
+// ============================
+// ДИНАМІЧНІ КАРТКИ (завдання 1)
+// ============================
+
+const recipesContainer = document.getElementById("recipesContainer");
+const cart = document.getElementById("cart");
+
+if (recipesContainer) {
+
+    const fragment = document.createDocumentFragment();
+
+    recipes.forEach(recipe => {
+
+        const col = document.createElement("div");
+        col.classList.add("col-md-4");
+
+        const card = document.createElement("div");
+        card.classList.add("card", "shadow", "h-100");
+
+        const body = document.createElement("div");
+        body.classList.add("card-body");
+
+        const title = document.createElement("h5");
+        title.classList.add("card-title");
+        title.textContent = recipe["recipe title"];
+
+        const time = document.createElement("p");
+        time.textContent = `Час: ${recipe.meta.time} хв`;
+
+        const diff = document.createElement("p");
+        diff.textContent = `Складність: ${recipe.meta.diff}`;
+
+        const btnDetails = document.createElement("button");
+        btnDetails.classList.add("btn", "btn-primary", "me-2");
+        btnDetails.textContent = "Детальніше";
+
+        const btnCart = document.createElement("button");
+        btnCart.classList.add("btn", "btn-success");
+        btnCart.textContent = "В кошик";
+
+        // Детальніше
+        btnDetails.addEventListener("click", () => {
+            alert(
+                `Рецепт: ${recipe["recipe title"]}\n` +
+                `Час: ${recipe.meta.time} хв\n` +
+                `Складність: ${recipe.meta.diff}\n` +
+                `Інгредієнтів: ${recipe.ingredients}`
+            );
+        });
+
+        // Кошик (cloneNode)
+        btnCart.addEventListener("click", () => {
+
+            const clone = card.cloneNode(true);
+            clone.classList.add("mb-2");
+
+            cart.appendChild(clone);
+
+        });
+
+        body.append(title, time, diff, btnDetails, btnCart);
+        card.append(body);
+        col.append(card);
+        fragment.append(col);
+
+    });
+
+    recipesContainer.append(fragment);
+}
+
+
+// ============================
+// ЗАВДАННЯ 2 - ДЕЛЕГУВАННЯ + ACTIVE
+// ============================
+
+if (recipesContainer) {
+
+    recipesContainer.addEventListener("click", (event) => {
+
+        const card = event.target.closest(".card");
+        if (!card) return;
+
+        // підсвітка картки
+        if (!event.target.closest("button")) {
+            card.classList.toggle("active");
+            return;
+        }
+
+    });
+}
+
+
+// ============================
+// SET - КАТЕГОРІЇ
+// ============================
+
+const categorySelect = document.getElementById("categorySelect");
+
+if (categorySelect) {
+
+    const categories = new Set(
+        recipes.map(r => r.meta.diff)
     );
 
-    if (!result) {
-        output.innerHTML = "<p style='color:red;'>Рецепт не знайдено</p>";
-        return;
-    }
+    categories.forEach(cat => {
 
-    output.innerHTML = `
-        <p><b>Назва:</b> ${result["recipe title"]}</p>
-        <p><b>Час:</b> ${result.meta.time} хв</p>
-        <p><b>Складність:</b> ${result.meta.diff}</p>
-        <p><b>Інгредієнти:</b> ${result.ingredients}</p>
-    `;
+        const option = document.createElement("option");
+        option.value = cat;
+        option.textContent = cat;
+
+        categorySelect.append(option);
+
+    });
+}
+
+
+// ============================
+// MAP - ШВИДКИЙ ПОШУК
+// ============================
+
+const liveSearch = document.getElementById("liveSearch");
+const priceOutput = document.getElementById("priceOutput");
+
+const recipeMap = new Map();
+
+recipes.forEach(r => {
+    recipeMap.set(
+        r["recipe title"].toLowerCase(),
+        r.meta.time
+    );
 });
+
+if (liveSearch && priceOutput) {
+
+    liveSearch.addEventListener("input", () => {
+
+        const value = liveSearch.value.toLowerCase();
+
+        if (recipeMap.has(value)) {
+            priceOutput.textContent =
+                "Час приготування: " +
+                recipeMap.get(value) + " хв";
+        } else {
+            priceOutput.textContent = "Не знайдено";
+        }
+
+    });
+
+}
