@@ -6,7 +6,6 @@ const recipes = [
     { id: 5, "recipe title": "Чізкейк", meta: { time: 120, diff: "Hard" }, ingredients: 10, "is spicy": false }
 ];
 
-// ================= SEARCH =================
 const btn = document.getElementById("searchBtn");
 const input = document.getElementById("searchInput");
 const output = document.getElementById("output");
@@ -38,7 +37,6 @@ if (btn && input && output) {
     });
 }
 
-// ================= CATALOG =================
 const recipesContainer = document.getElementById("recipesContainer");
 const cart = document.getElementById("cart");
 
@@ -74,7 +72,6 @@ if (recipesContainer) {
         btnCart.classList.add("btn", "btn-success");
         btnCart.textContent = "В кошик";
 
-        // details
         btnDetails.addEventListener("click", () => {
             alert(
                 `Рецепт: ${recipe["recipe title"]}\n` +
@@ -84,7 +81,6 @@ if (recipesContainer) {
             );
         });
 
-        // cart (без багів)
         btnCart.addEventListener("click", () => {
             const item = document.createElement("div");
             item.classList.add("border", "p-2", "mb-2");
@@ -101,7 +97,7 @@ if (recipesContainer) {
     recipesContainer.append(fragment);
 }
 
-// ================= CLICK CARD =================
+
 if (recipesContainer) {
     recipesContainer.addEventListener("click", (event) => {
         const card = event.target.closest(".card");
@@ -113,7 +109,6 @@ if (recipesContainer) {
     });
 }
 
-// ================= CATEGORY FILTER =================
 const categorySelect = document.getElementById("categorySelect");
 
 if (categorySelect) {
@@ -127,7 +122,7 @@ if (categorySelect) {
     });
 }
 
-// ================= LIVE SEARCH =================
+
 const liveSearch = document.getElementById("liveSearch");
 const priceOutput = document.getElementById("priceOutput");
 
@@ -154,7 +149,7 @@ if (liveSearch && priceOutput) {
     });
 }
 
-// ================= FORM =================
+
 const form = document.forms.contactForm;
 
 if (form) {
@@ -188,3 +183,184 @@ if (form) {
 /* Клієнтська валідація не є безпечною, тому що користувач може її обійти
 (змінити HTML, вимкнути JavaScript або відправити запит напряму).
 Тому серверна валідація є обов’язковою — це "золоте правило безпеки". */
+
+class CartManager {
+
+    constructor() {
+        this.cart = JSON.parse(localStorage.getItem("recipeCart")) || [];
+    }
+
+    addToCart(product) {
+        this.cart.push(product);
+        this.saveCart();
+    }
+
+    removeFromCart(id) {
+        this.cart = this.cart.filter(item => item.id !== id);
+        this.saveCart();
+    }
+
+    clearCart() {
+        this.cart = [];
+        this.saveCart();
+    }
+
+    saveCart() {
+        localStorage.setItem("recipeCart", JSON.stringify(this.cart));
+    }
+
+    getCart() {
+        return this.cart;
+    }
+}
+
+const cartManager = new CartManager();
+
+async function loadProducts() {
+
+    try {
+
+        const response = await fetch(
+            "https://www.themealdb.com/api/json/v1/1/search.php?s="
+        );
+
+        if (!response.ok) {
+            throw new Error("Fetch error");
+        }
+
+        const data = await response.json();
+
+        renderProducts(data.meals);
+
+    } catch (error) {
+
+        console.error(error);
+
+        const container = document.getElementById("recipesContainer");
+
+        if (container) {
+            container.innerHTML =
+                "<p class='text-danger'>Не вдалося завантажити рецепти</p>";
+        }
+    }
+}
+
+function renderProducts(meals) {
+
+    const container = document.getElementById("recipesContainer");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    meals.forEach(meal => {
+
+        const col = document.createElement("div");
+        col.className = "col-md-4";
+
+        col.innerHTML = `
+            <div class="card shadow h-100">
+
+                <img src="${meal.strMealThumb}" class="card-img-top">
+
+                <div class="card-body">
+
+                    <h5>${meal.strMeal}</h5>
+
+                    <p>${meal.strCategory || ""}</p>
+
+                    <button class="btn btn-success add-btn"
+                        data-id="${meal.idMeal}"
+                        data-title="${meal.strMeal}">
+                        В кошик
+                    </button>
+
+                </div>
+            </div>
+        `;
+
+        container.appendChild(col);
+    });
+
+    initCartButtons();
+}
+
+function initCartButtons() {
+
+    document.querySelectorAll(".add-btn").forEach(btn => {
+
+        btn.addEventListener("click", () => {
+
+            const item = {
+                id: btn.dataset.id,
+                title: btn.dataset.title
+            };
+
+            cartManager.addToCart(item);
+
+            renderCart();
+            updateCounter();
+        });
+    });
+}
+
+
+function renderCart() {
+
+    const cartBox = document.getElementById("cart");
+    if (!cartBox) return;
+
+    cartBox.innerHTML = "";
+
+    cartManager.getCart().forEach(item => {
+
+        const div = document.createElement("div");
+
+        div.className = "border p-2 mb-2 d-flex justify-content-between";
+
+        div.innerHTML = `
+            <span>${item.title}</span>
+            <button class="btn btn-sm btn-danger"
+                onclick="deleteItem('${item.id}')">
+                X
+            </button>
+        `;
+
+        cartBox.appendChild(div);
+    });
+}
+
+
+function deleteItem(id) {
+
+    cartManager.removeFromCart(id);
+
+    renderCart();
+    updateCounter();
+}
+
+function updateCounter() {
+
+    const counter = document.getElementById("cartCounter");
+
+    if (!counter) return;
+
+    counter.textContent =
+        `Кошик: ${cartManager.getCart().length} рецептів`;
+}
+
+const clearBtn = document.getElementById("clearCartBtn");
+
+if (clearBtn) {
+
+    clearBtn.addEventListener("click", () => {
+
+        cartManager.clearCart();
+
+        renderCart();
+        updateCounter();
+    });
+}
+
+loadProducts();
+renderCart();
+updateCounter();
