@@ -1,0 +1,36 @@
+.field-box {
+    position: relative;
+}
+
+.form-control:valid,
+.form-select:valid {
+    border: 2px solid green;
+}
+
+.form-control:invalid:not(:placeholder-shown),
+.form-select:invalid {
+    border: 2px solid red;
+}
+
+.field-box::after {
+    position: absolute;
+    right: 15px;
+    top: 38px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.field-box:has(.form-control:valid)::after,
+.field-box:has(.form-select:valid)::after {
+    content: "✔";
+    color: green;
+}
+
+.field-box:has(.form-control:invalid:not(:placeholder-shown))::after,
+.field-box:has(.form-select:invalid)::after {
+    content: "✖";
+    color: red;
+}
+
+
+

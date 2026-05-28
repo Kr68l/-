@@ -1,0 +1,149 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --main-color: #e1a0d0;
+    --accent-color: #134a1b;
+    --bg-color: #f5f5f5;
+    --text-color: #333;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+}
+
+
+h1 {
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+h2 {
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+p {
+    line-height: 1.6;
+    text-align: center;
+}
+
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+
+header {
+    background-color: var(--main-color);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+nav a {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: white;
+    text-decoration: none;
+}
+
+nav a:hover {
+    background-color: var(--accent-color);
+}
+
+.active {
+    border-bottom: 3px solid rgb(111, 23, 98);
+}
+
+
+section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-bottom: 2px solid var(--accent-color);
+}
+
+button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #ff06e6;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td, th {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #eee;
+}
+
+img {
+    border-radius: 10px;
+}
+
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--main-color);
+    color: white;
+}
+
+section {
+    overflow: hidden;
+}
+
+input::placeholder {
+    color: #aaa;
+}
+
+input:invalid {
+    border-bottom: 2px solid red;
+}
